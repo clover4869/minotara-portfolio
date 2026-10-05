@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Minotara — More Than a Vendor. Your Technology Partner.</title>
+<meta name="description" content="Software engineering teams helping ambitious businesses turn ideas into scalable digital products." />
+<style>
+  :root {
+    --bg-0: #05060c;
+    --bg-1: #080a16;
+    --bg-2: #0b0e1f;
+    --ink: #eef1fb;
+    --ink-soft: #a9b0cf;
+    --ink-dim: #6b7399;
+    --accent: #6ea8ff;
+    --accent-2: #9d7bff;
+    --accent-3: #35e6c5;
+    --line: rgba(255, 255, 255, 0.08);
+    --glass: rgba(18, 22, 44, 0.55);
+    --glass-strong: rgba(22, 27, 54, 0.8);
+    --radius: 18px;
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+    --maxw: 1200px;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg-0);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 {
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Ambient background gradients ---------- */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(1100px 700px at 78% -5%, rgba(110, 168, 255, 0.16), transparent 60%),
+      radial-gradient(900px 650px at 10% 15%, rgba(157, 123, 255, 0.14), transparent 55%),
+      radial-gradient(1000px 800px at 50% 110%, rgba(53, 230, 197, 0.1), transparent 60%),
+      linear-gradient(180deg, var(--bg-0), var(--bg-1) 40%, var(--bg-2));
+  }
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* ---------- Nav ---------- */
+  header.nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    transition: background 0.4s var(--ease), border-color 0.4s var(--ease), backdrop-filter 0.4s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  header.nav.scrolled {
+    background: rgba(6, 8, 16, 0.7);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: -0.01em; }
+  .brand .mark {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: conic-gradient(from 140deg, var(--accent), var(--accent-2), var(--accent-3), var(--accent));
+    box-shadow: 0 0 24px rgba(110, 168, 255, 0.5);
+    position: relative;
+  }
+  .brand .mark::after {
+    content: ""; position: absolute; inset: 6px; border-radius: 5px;
+    background: var(--bg-0);
+  }
+  nav.links { display: flex; gap: 30px; }
+  nav.links a {
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    transition: color 0.25s var(--ease);
+  }
+  nav.links a:hover { color: var(--ink); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-size: 14.5px; font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s var(--ease), border-color 0.25s var(--ease);
+    white-space: nowrap;
+  }
+  .btn-primary {
+    color: #061018;
+    background: linear-gradient(120deg, var(--accent-3), var(--accent));
+    box-shadow: 0 10px 30px rgba(53, 230, 197, 0.25);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(53, 230, 197, 0.4); }
+  .btn-ghost {
+    color: var(--ink);
+    background: var(--glass);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+  }
+  .btn-ghost:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.22); background: var(--glass-strong); }
+
+  @media (max-width: 820px) {
+    nav.links { display: none; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 72px;
+    overflow: hidden;
+  }
+  #hero-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero-fade {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 220px;
+    background: linear-gradient(180deg, transparent, var(--bg-1));
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 680px;
+    padding: 60px 0;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--glass);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+    margin-bottom: 26px;
+  }
+  .eyebrow .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent-3);
+    box-shadow: 0 0 10px var(--accent-3);
+    animation: pulse 2.4s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  .hero h1 {
+    font-size: clamp(42px, 7vw, 86px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(100deg, var(--accent-3), var(--accent) 45%, var(--accent-2));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p.tagline {
+    font-size: clamp(18px, 2.6vw, 24px);
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 18px;
+  }
+  .hero p.tagline .grad {
+    background: linear-gradient(100deg, var(--accent-3), var(--accent) 55%, var(--accent-2));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero p.lead {
+    font-size: clamp(16px, 2.2vw, 20px);
+    color: var(--ink-soft);
+    max-width: 560px;
+    margin-bottom: 36px;
+  }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  /* ---------- Section shell ---------- */
+  section.block { position: relative; padding: 120px 0; }
+  .section-head { max-width: 640px; margin-bottom: 60px; }
+  .section-tag {
+    font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .section-head h2 { font-size: clamp(30px, 4.5vw, 50px); margin-bottom: 18px; }
+  .section-head p { color: var(--ink-soft); font-size: 17px; }
+
+  /* reveal animation */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- Glass card base ---------- */
+  .glass {
+    background: var(--glass);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .glass::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(140deg, rgba(255,255,255,0.07), transparent 40%);
+    pointer-events: none;
+  }
+
+  /* ---------- Services ---------- */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+  }
+  .svc {
+    padding: 30px 26px 32px;
+    transition: transform 0.4s var(--ease), border-color 0.4s var(--ease);
+  }
+  .svc:hover { transform: translateY(-6px); border-color: rgba(110,168,255,0.4); }
+  .svc .obj {
+    width: 92px; height: 92px;
+    margin-bottom: 22px;
+    perspective: 600px;
+  }
+  .svc h3 { font-size: 20px; margin-bottom: 10px; }
+  .svc p { color: var(--ink-soft); font-size: 15px; margin: 0; }
+  .svc .tags { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-size: 12px; color: var(--ink-soft);
+    padding: 5px 11px; border-radius: 999px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+  }
+
+  /* small CSS-3D spinning object inside service cards */
+  .obj3d { width: 100%; height: 100%; transform-style: preserve-3d; animation: spin3d 14s linear infinite; }
+  @keyframes spin3d { from { transform: rotateX(-18deg) rotateY(0); } to { transform: rotateX(-18deg) rotateY(360deg); } }
+  .obj3d .face {
+    position: absolute; inset: 0; margin: auto;
+    width: 64px; height: 64px; left: 14px; top: 14px;
+    border: 1.5px solid rgba(110,168,255,0.55);
+    border-radius: 10px;
+    background: linear-gradient(140deg, rgba(110,168,255,0.14), rgba(157,123,255,0.06));
+    box-shadow: 0 0 18px rgba(110,168,255,0.25);
+  }
+  .obj3d .f1 { transform: translateZ(32px); }
+  .obj3d .f2 { transform: rotateY(180deg) translateZ(32px); }
+  .obj3d .f3 { transform: rotateY(90deg) translateZ(32px); border-color: rgba(157,123,255,0.55); }
+  .obj3d .f4 { transform: rotateY(-90deg) translateZ(32px); border-color: rgba(157,123,255,0.55); }
+  .obj3d .f5 { transform: rotateX(90deg) translateZ(32px); border-color: rgba(53,230,197,0.55); }
+  .obj3d .f6 { transform: rotateX(-90deg) translateZ(32px); border-color: rgba(53,230,197,0.55); }
+
+  /* ---------- Projects ---------- */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+  }
+  .proj {
+    padding: 0;
+    transition: transform 0.5s var(--ease);
+    transform-style: preserve-3d;
+  }
+  .proj:hover { transform: translateY(-8px) rotateX(2deg); }
+  .proj .top {
+    padding: 28px 28px 20px;
+    position: relative;
+    background: linear-gradient(160deg, rgba(110,168,255,0.1), transparent);
+    border-bottom: 1px solid var(--line);
+  }
+  .proj .industry {
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent-3); font-weight: 600; margin-bottom: 8px;
+  }
+  .proj .top h3 { font-size: 23px; }
+  .proj .body { padding: 24px 28px 28px; display: grid; gap: 16px; }
+  .proj .row .label {
+    font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-dim); margin-bottom: 4px;
+  }
+  .proj .row .val { font-size: 15px; color: var(--ink-soft); }
+  .proj .result {
+    display: inline-block;
+    font-size: 15px; font-weight: 600; color: var(--ink);
+    padding: 10px 16px; border-radius: 12px;
+    background: linear-gradient(120deg, rgba(53,230,197,0.14), rgba(110,168,255,0.1));
+    border: 1px solid rgba(53,230,197,0.3);
+  }
+  .proj .tech { display: flex; flex-wrap: wrap; gap: 7px; }
+
+  /* ---------- Metrics ---------- */
+  .metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+    margin-bottom: 56px;
+  }
+  .metric { padding: 30px 26px; text-align: center; }
+  .metric .num {
+    font-size: clamp(34px, 5vw, 52px); font-weight: 700;
+    background: linear-gradient(120deg, var(--accent-3), var(--accent));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.03em;
+  }
+  .metric .cap { color: var(--ink-soft); font-size: 14.5px; margin-top: 6px; }
+  @media (max-width: 680px) { .metrics { grid-template-columns: 1fr; } }
+
+  /* ---------- Team ---------- */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .member { padding: 26px; text-align: center; transition: transform 0.4s var(--ease), border-color 0.4s var(--ease); }
+  .member:hover { transform: translateY(-5px); border-color: rgba(157,123,255,0.4); }
+  .avatar {
+    width: 78px; height: 78px; border-radius: 50%;
+    margin: 0 auto 16px;
+    display: grid; place-items: center;
+    font-size: 24px; font-weight: 700; color: #061018;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 26px rgba(157,123,255,0.4);
+  }
+  .member h3 { font-size: 18px; }
+  .member .role { color: var(--accent); font-size: 13.5px; margin-top: 4px; font-weight: 600; }
+  .member p { color: var(--ink-soft); font-size: 13.5px; margin: 12px 0 0; }
+
+  /* ---------- Process ---------- */
+  .process {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    position: relative;
+  }
+  .process::before {
+    content: ""; position: absolute; top: 46px; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(90deg, var(--accent-3), var(--accent), var(--accent-2));
+    opacity: 0.4;
+    z-index: 0;
+  }
+  .step { text-align: center; padding: 0 16px; position: relative; z-index: 1; }
+  .step .node {
+    width: 64px; height: 64px; margin: 0 auto 20px;
+    border-radius: 20px;
+    display: grid; place-items: center;
+    font-weight: 700; font-size: 20px;
+    background: var(--glass-strong);
+    border: 1px solid rgba(110,168,255,0.4);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(110,168,255,0.25);
+    transition: transform 0.4s var(--ease);
+    color: var(--accent);
+  }
+  .step:hover .node { transform: translateY(-6px) scale(1.05); }
+  .step h3 { font-size: 18px; margin-bottom: 8px; }
+  .step p { color: var(--ink-soft); font-size: 14px; margin: 0; }
+  @media (max-width: 760px) {
+    .process { grid-template-columns: 1fr 1fr; gap: 40px 0; }
+    .process::before { display: none; }
+  }
+
+  /* ---------- Final CTA ---------- */
+  .final {
+    text-align: center;
+    padding: 90px 40px;
+    border-radius: 28px;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(600px 300px at 50% 0%, rgba(110,168,255,0.18), transparent 70%),
+      var(--glass-strong);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(14px);
+  }
+  .final h2 { font-size: clamp(32px, 5vw, 58px); margin-bottom: 20px; }
+  .final p { color: var(--ink-soft); font-size: 18px; max-width: 520px; margin: 0 auto 34px; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 44px 0 60px;
+    color: var(--ink-dim);
+    font-size: 14px;
+  }
+  .foot-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+
+  /* scroll progress bar */
+  .progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 0;
+    background: linear-gradient(90deg, var(--accent-3), var(--accent), var(--accent-2));
+    z-index: 60;
+    box-shadow: 0 0 12px rgba(110,168,255,0.6);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .obj3d, .eyebrow .dot { animation: none !important; }
+    .reveal { transition: none; opacity: 1; transform: none; }
+    * { scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="ambient"></div>
+  <div class="grain"></div>
+  <div class="progress" id="progress"></div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">
+        <span class="mark"></span>
+        <span>Minotara</span>
+      </a>
+      <nav class="links">
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
+        <a href="#team">Team</a>
+        <a href="#process">Process</a>
+      </nav>
+      <a href="#contact" class="btn btn-primary">Start a Project</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div id="hero-canvas"></div>
+    <div class="hero-fade"></div>
+    <div class="wrap hero-content">
+      <span class="eyebrow"><span class="dot"></span> Minotara · More Than a Vendor</span>
+      <h1>We Build <span class="grad">Digital Worlds.</span></h1>
+      <p class="tagline">More Than a Vendor. <span class="grad">Your Technology Partner.</span></p>
+      <p class="lead">Software engineering teams helping ambitious businesses turn ideas into scalable digital products.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Start a Project →</a>
+        <a href="#projects" class="btn btn-ghost">Explore Our Work</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="block" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-tag">What we do</div>
+        <h2>Engineering across the full stack</h2>
+        <p>Dedicated teams that plug into your roadmap and ship production-grade software — from interface to infrastructure.</p>
+      </div>
+      <div class="services-grid" id="services-grid"></div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="block" id="projects">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-tag">Selected work</div>
+        <h2>Case studies, not just screenshots</h2>
+        <p>A look at how we turn complex challenges into measurable business outcomes.</p>
+      </div>
+      <div class="projects-grid" id="projects-grid"></div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="block" id="team">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-tag">The people</div>
+        <h2>A compact, senior team</h2>
+        <p>Small enough to move fast, experienced enough to get it right the first time.</p>
+      </div>
+      <div class="metrics reveal" id="metrics"></div>
+      <div class="team-grid" id="team-grid"></div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="block" id="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-tag">How we work</div>
+        <h2>A connected delivery journey</h2>
+        <p>Four clear phases, continuous feedback, and no surprises at launch.</p>
+      </div>
+      <div class="process reveal" id="process-grid"></div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="block" id="contact">
+    <div class="wrap">
+      <div class="final reveal">
+        <h2>Let's Build Something Extraordinary.</h2>
+        <p>Tell us about your product. We'll assemble the right team and a plan to ship it.</p>
+        <a href="mailto:hello@minotara.com" class="btn btn-primary">Start a Project →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot-inner">
+      <div class="brand"><span class="mark"></span> Minotara</div>
+      <div>© 2026 Minotara · More Than a Vendor. Your Technology Partner.</div>
+    </div>
+  </footer>
+
+  <script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+
+  <script type="module">
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* =========================================================
+       DATA
+    ========================================================= */
+    const services = [
+      { title: 'Web Development', shape: 'browser', desc: 'Fast, accessible web apps and marketing sites built on modern frameworks.', tags: ['React', 'Next.js', 'TypeScript'] },
+      { title: 'Mobile Development', shape: 'device', desc: 'Native-feeling iOS & Android apps from a single, maintainable codebase.', tags: ['Flutter', 'React Native', 'Swift'] },
+      { title: 'Cloud & DevOps', shape: 'cloud', desc: 'Resilient infrastructure, CI/CD pipelines and observability that scale.', tags: ['AWS', 'Kubernetes', 'Terraform'] },
+      { title: 'AI Solutions', shape: 'ai', desc: 'Applied machine learning, LLM integrations and intelligent automation.', tags: ['PyTorch', 'LLMs', 'RAG'] },
+      { title: 'Backend Engineering', shape: 'nodes', desc: 'High-throughput APIs, event systems and data platforms you can trust.', tags: ['Go', 'Node.js', 'PostgreSQL'] },
+    ];
+
+    const projects = [
+      { name: 'AtlasPay', industry: 'Fintech', challenge: 'Legacy ledger could not scale past 2k TPS during peak settlement.', solution: 'Rebuilt core on an event-sourced architecture with CQRS and horizontal sharding.', tech: ['Go', 'Kafka', 'PostgreSQL', 'AWS'], result: '18x throughput, 99.99% uptime' },
+      { name: 'MediSync', industry: 'HealthTech', challenge: 'Fragmented patient data across 40+ clinics slowed diagnostics.', solution: 'Unified data platform with FHIR APIs and real-time sync across sites.', tech: ['Node.js', 'TypeScript', 'GCP', 'FHIR'], result: '−63% record retrieval time' },
+      { name: 'FleetGrid', industry: 'Logistics', challenge: 'Manual routing left trucks idle and fuel costs climbing.', solution: 'AI route-optimization engine with live telemetry and demand forecasting.', tech: ['Python', 'PyTorch', 'Kubernetes'], result: '−22% fuel cost per route' },
+      { name: 'Lumen Studio', industry: 'Media', challenge: 'Creators needed collaborative editing without heavy desktop tools.', solution: 'Browser-based realtime editor with CRDT sync and GPU rendering.', tech: ['React', 'WebGL', 'Rust', 'WASM'], result: '120k creators onboarded' },
+    ];
+
+    const team = [
+      { name: 'Elena Rhys', role: 'Principal Engineer', bio: 'Distributed systems & platform architecture.' },
+      { name: 'Kaito Mori', role: 'Lead Mobile Engineer', bio: 'Cross-platform apps at consumer scale.' },
+      { name: 'Priya Nandan', role: 'ML Engineer', bio: 'Applied ML, LLM pipelines & evaluation.' },
+      { name: 'Marco Vieira', role: 'Cloud / DevOps Lead', bio: 'Reliability, cost & secure infrastructure.' },
+      { name: 'Sofia Haddad', role: 'Frontend Lead', bio: 'Design systems & accessible interfaces.' },
+      { name: 'David Okonkwo', role: 'Backend Engineer', bio: 'APIs, data pipelines & performance.' },
+      { name: 'Ava Lindqvist', role: 'Product Engineer', bio: 'Discovery, prototyping & delivery.' },
+      { name: 'Jonah Park', role: 'QA & Automation', bio: 'Test strategy & release confidence.' },
+    ];
+
+    const metrics = [
+      { num: '8+', cap: 'Engineers' },
+      { num: '20+', cap: 'Projects Delivered' },
+      { num: '5+', cap: 'Years Experience' },
+    ];
+
+    const process = [
+      { k: '01', title: 'Discover', desc: 'Workshops to align on goals, users and constraints.' },
+      { k: '02', title: 'Plan', desc: 'Architecture, scope and a realistic delivery roadmap.' },
+      { k: '03', title: 'Build', desc: 'Iterative sprints with continuous feedback and demos.' },
+      { k: '04', title: 'Launch', desc: 'Hardening, release and ongoing optimization.' },
+    ];
+
+    /* =========================================================
+       RENDER CONTENT
+    ========================================================= */
+    const cube = () => `<div class="obj3d"><span class="face f1"></span><span class="face f2"></span><span class="face f3"></span><span class="face f4"></span><span class="face f5"></span><span class="face f6"></span></div>`;
+
+    document.getElementById('services-grid').innerHTML = services.map(s => `
+      <article class="glass svc reveal">
+        <div class="obj">${cube()}</div>
+        <h3>${s.title}</h3>
+        <p>${s.desc}</p>
+        <div class="tags">${s.tags.map(t => `<span class="chip">${t}</span>`).join('')}</div>
+      </article>`).join('');
+
+    document.getElementById('projects-grid').innerHTML = projects.map(p => `
+      <article class="glass proj reveal">
+        <div class="top">
+          <div class="industry">${p.industry}</div>
+          <h3>${p.name}</h3>
+        </div>
+        <div class="body">
+          <div class="row"><div class="label">Challenge</div><div class="val">${p.challenge}</div></div>
+          <div class="row"><div class="label">Solution</div><div class="val">${p.solution}</div></div>
+          <div class="row"><div class="label">Technology</div><div class="tech">${p.tech.map(t => `<span class="chip">${t}</span>`).join('')}</div></div>
+          <div class="row"><div class="label">Result</div><span class="result">${p.result}</span></div>
+        </div>
+      </article>`).join('');
+
+    document.getElementById('metrics').innerHTML = metrics.map(m => `
+      <div class="glass metric"><div class="num">${m.num}</div><div class="cap">${m.cap}</div></div>`).join('');
+
+    document.getElementById('team-grid').innerHTML = team.map(t => {
+      const initials = t.name.split(' ').map(n => n[0]).join('');
+      return `<article class="glass member reveal">
+        <div class="avatar">${initials}</div>
+        <h3>${t.name}</h3>
+        <div class="role">${t.role}</div>
+        <p>${t.bio}</p>
+      </article>`;
+    }).join('');
+
+    document.getElementById('process-grid').innerHTML = process.map(p => `
+      <div class="step">
+        <div class="node">${p.k}</div>
+        <h3>${p.title}</h3>
+        <p>${p.desc}</p>
+      </div>`).join('');
+
+    /* =========================================================
+       NAV / SCROLL PROGRESS / REVEAL
+    ========================================================= */
+    const nav = document.getElementById('nav');
+    const progress = document.getElementById('progress');
+    const onScroll = () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* =========================================================
+       THREE.JS HERO SCENE
+    ========================================================= */
+    import('three').then((THREE) => {
+      const mount = document.getElementById('hero-canvas');
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x05060c, 0.055);
+
+      const camera = new THREE.PerspectiveCamera(55, mount.clientWidth / mount.clientHeight, 0.1, 100);
+      camera.position.set(0, 0, 14);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(mount.clientWidth, mount.clientHeight);
+      mount.appendChild(renderer.domElement);
+
+      // Lighting — soft volumetric feel
+      scene.add(new THREE.AmbientLight(0x4a5a8f, 0.6));
+      const key = new THREE.PointLight(0x6ea8ff, 180, 60); key.position.set(10, 8, 12); scene.add(key);
+      const fill = new THREE.PointLight(0x9d7bff, 140, 60); fill.position.set(-12, -6, 6); scene.add(fill);
+      const rim = new THREE.PointLight(0x35e6c5, 120, 50); rim.position.set(0, 10, -8); scene.add(rim);
+
+      const group = new THREE.Group();
+      scene.add(group);
+
+      // ---- Central AI-inspired icosahedron (the "intelligent core") ----
+      const coreGeo = new THREE.IcosahedronGeometry(2.1, 1);
+      const coreMat = new THREE.MeshStandardMaterial({
+        color: 0x9fc0ff, emissive: 0x203a7a, metalness: 0.6, roughness: 0.25,
+        wireframe: false, transparent: true, opacity: 0.92
+      });
+      const core = new THREE.Mesh(coreGeo, coreMat);
+      group.add(core);
+
+      const coreWire = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(2.35, 1),
+        new THREE.MeshBasicMaterial({ color: 0x6ea8ff, wireframe: true, transparent: true, opacity: 0.25 })
+      );
+      group.add(coreWire);
+
+      // ---- Floating nodes + connecting data streams ----
+      const nodeCount = 26;
+      const nodes = [];
+      const nodeGeo = new THREE.SphereGeometry(0.14, 16, 16);
+      const nodeMat = new THREE.MeshStandardMaterial({ color: 0x35e6c5, emissive: 0x0e6b5c, metalness: 0.5, roughness: 0.3 });
+      const nodeMat2 = new THREE.MeshStandardMaterial({ color: 0x9d7bff, emissive: 0x3a2a7a, metalness: 0.5, roughness: 0.3 });
+
+      for (let i = 0; i < nodeCount; i++) {
+        const m = new THREE.Mesh(nodeGeo, i % 2 ? nodeMat2 : nodeMat);
+        const r = 4 + Math.random() * 4.5;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        m.position.set(
+          r * Math.sin(phi) * Math.cos(theta),
+          r * Math.cos(phi) * 0.7,
+          r * Math.sin(phi) * Math.sin(theta)
+        );
+        m.userData = {
+          base: m.position.clone(),
+          speed: 0.4 + Math.random() * 0.8,
+          phase: Math.random() * Math.PI * 2,
+          amp: 0.3 + Math.random() * 0.5
+        };
+        group.add(m);
+        nodes.push(m);
+      }
+
+      // connecting lines between nearby nodes (data streams)
+      const linePos = [];
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          if (nodes[i].position.distanceTo(nodes[j].position) < 3.4) {
+            linePos.push(nodes[i].position.x, nodes[i].position.y, nodes[i].position.z);
+            linePos.push(nodes[j].position.x, nodes[j].position.y, nodes[j].position.z);
+          }
+        }
+      }
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
+      const lines = new THREE.LineSegments(
+        lineGeo,
+        new THREE.LineBasicMaterial({ color: 0x6ea8ff, transparent: true, opacity: 0.18 })
+      );
+      group.add(lines);
+
+      // ---- Abstract "cloud/server" torus rings orbiting the core ----
+      const ringMat = new THREE.MeshStandardMaterial({ color: 0x6ea8ff, emissive: 0x16305e, metalness: 0.7, roughness: 0.3, transparent: true, opacity: 0.75 });
+      const ring1 = new THREE.Mesh(new THREE.TorusGeometry(3.4, 0.06, 16, 120), ringMat);
+      ring1.rotation.x = Math.PI / 2.4; group.add(ring1);
+      const ring2 = new THREE.Mesh(new THREE.TorusGeometry(4.2, 0.045, 16, 120), ringMat.clone());
+      ring2.rotation.x = Math.PI / 1.7; ring2.rotation.y = 0.6; group.add(ring2);
+
+      // ---- Orbiting "data cubes" (software / server blocks) ----
+      const cubes = [];
+      const cubeGeo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+      const cubeMat = new THREE.MeshStandardMaterial({ color: 0xcdd9ff, emissive: 0x1a2550, metalness: 0.8, roughness: 0.2 });
+      for (let i = 0; i < 5; i++) {
+        const c = new THREE.Mesh(cubeGeo, cubeMat);
+        c.userData = { radius: 3.2 + i * 0.9, speed: 0.2 + i * 0.05, offset: i * 1.3, tilt: (i - 2) * 0.5 };
+        group.add(c);
+        cubes.push(c);
+      }
+
+      // ---- Particle field (subtle depth) ----
+      const pCount = 700;
+      const pPos = new Float32Array(pCount * 3);
+      for (let i = 0; i < pCount; i++) {
+        pPos[i*3]   = (Math.random() - 0.5) * 60;
+        pPos[i*3+1] = (Math.random() - 0.5) * 40;
+        pPos[i*3+2] = (Math.random() - 0.5) * 40 - 6;
+      }
+      const pGeo = new THREE.BufferGeometry();
+      pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+      const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0x8fa8d8, size: 0.055, transparent: true, opacity: 0.6, sizeAttenuation: true }));
+      scene.add(particles);
+
+      // ---- Mouse interaction ----
+      const target = { x: 0, y: 0 };
+      const current = { x: 0, y: 0 };
+      window.addEventListener('pointermove', (e) => {
+        target.x = (e.clientX / window.innerWidth - 0.5);
+        target.y = (e.clientY / window.innerHeight - 0.5);
+      });
+
+      // ---- Resize ----
+      const resize = () => {
+        const w = mount.clientWidth, h = mount.clientHeight;
+        camera.aspect = w / h; camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      };
+      window.addEventListener('resize', resize);
+
+      // ---- Animate ----
+      const clock = new THREE.Clock();
+      let scrollFactor = 0;
+      window.addEventListener('scroll', () => {
+        scrollFactor = Math.min(window.scrollY / window.innerHeight, 1);
+      }, { passive: true });
+
+      function animate() {
+        const t = clock.getElapsedTime();
+
+        if (!reduceMotion) {
+          // ease mouse
+          current.x += (target.x - current.x) * 0.05;
+          current.y += (target.y - current.y) * 0.05;
+
+          group.rotation.y = t * 0.08 + current.x * 0.8;
+          group.rotation.x = current.y * 0.5;
+
+          core.rotation.y = t * 0.3;
+          core.rotation.x = t * 0.15;
+          coreWire.rotation.y = -t * 0.2;
+
+          ring1.rotation.z = t * 0.3;
+          ring2.rotation.z = -t * 0.22;
+
+          nodes.forEach(n => {
+            const d = n.userData;
+            n.position.copy(d.base);
+            n.position.y += Math.sin(t * d.speed + d.phase) * d.amp;
+          });
+
+          cubes.forEach(c => {
+            const d = c.userData;
+            const a = t * d.speed + d.offset;
+            c.position.set(Math.cos(a) * d.radius, Math.sin(a) * d.radius * 0.4 + d.tilt, Math.sin(a) * d.radius);
+            c.rotation.x = a; c.rotation.y = a * 0.7;
+          });
+
+          particles.rotation.y = t * 0.015;
+
+          // gentle parallax of camera on scroll
+          camera.position.y = -scrollFactor * 3;
+          camera.position.z = 14 + scrollFactor * 4;
+          camera.lookAt(0, 0, 0);
+        }
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // pause rendering when hero off-screen (perf)
+      const heroEl = document.querySelector('.hero');
+      const heroIO = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) { if (clock.running === false) clock.start(); }
+      });
+      heroIO.observe(heroEl);
+    }).catch(err => {
+      console.warn('3D scene failed to load, falling back to static hero.', err);
+    });
+  </script>
+</body>
+</html>
