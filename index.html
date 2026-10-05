@@ -126,9 +126,6 @@
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(53, 230, 197, 0.4); }
   .btn-ghost {
     color: var(--ink);
-    background: var(--glass);
-    border: 1px solid var(--line);
-    backdrop-filter: blur(10px);
   }
   .btn-ghost:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.22); background: var(--glass-strong); }
 
@@ -170,10 +167,12 @@
     color: var(--ink-soft);
     padding: 8px 16px;
     border-radius: 999px;
+    margin-bottom: 26px;
+  }
+  .btn-ghost, .eyebrow {
     background: var(--glass);
     border: 1px solid var(--line);
     backdrop-filter: blur(10px);
-    margin-bottom: 26px;
   }
   .eyebrow .dot {
     width: 7px; height: 7px; border-radius: 50%;
@@ -189,10 +188,12 @@
     letter-spacing: -0.03em;
     margin-bottom: 24px;
   }
-  .hero h1 .grad {
-    background: linear-gradient(100deg, var(--accent-3), var(--accent) 45%, var(--accent-2));
+  .hero h1 .grad, .hero p.tagline .grad, .metric .num {
     -webkit-background-clip: text; background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+  .hero h1 .grad {
+    background-image: linear-gradient(100deg, var(--accent-3), var(--accent) 45%, var(--accent-2));
   }
   .hero p.tagline {
     font-size: clamp(18px, 2.6vw, 24px);
@@ -202,9 +203,7 @@
     margin-bottom: 18px;
   }
   .hero p.tagline .grad {
-    background: linear-gradient(100deg, var(--accent-3), var(--accent) 55%, var(--accent-2));
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(100deg, var(--accent-3), var(--accent) 55%, var(--accent-2));
   }
   .hero p.lead {
     font-size: clamp(16px, 2.2vw, 20px);
@@ -217,8 +216,11 @@
   /* ---------- Section shell ---------- */
   section.block { position: relative; padding: 120px 0; }
   .section-head { max-width: 640px; margin-bottom: 60px; }
+  .section-tag, .proj .industry, .proj .row .label {
+    text-transform: uppercase;
+  }
   .section-tag {
-    font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+    font-size: 13px; letter-spacing: 0.16em;
     color: var(--accent); font-weight: 600;
     margin-bottom: 16px;
   }
@@ -308,13 +310,13 @@
     border-bottom: 1px solid var(--line);
   }
   .proj .industry {
-    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    font-size: 12px; letter-spacing: 0.12em;
     color: var(--accent-3); font-weight: 600; margin-bottom: 8px;
   }
   .proj .top h3 { font-size: 23px; }
   .proj .body { padding: 24px 28px 28px; display: grid; gap: 16px; }
   .proj .row .label {
-    font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase;
+    font-size: 11.5px; letter-spacing: 0.1em;
     color: var(--ink-dim); margin-bottom: 4px;
   }
   .proj .row .val { font-size: 15px; color: var(--ink-soft); }
@@ -335,8 +337,7 @@
   .metric { padding: 30px 26px; text-align: center; }
   .metric .num {
     font-size: clamp(34px, 5vw, 52px); font-weight: 700;
-    background: linear-gradient(120deg, var(--accent-3), var(--accent));
-    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(120deg, var(--accent-3), var(--accent));
     letter-spacing: -0.03em;
   }
   .metric .cap { color: var(--ink-soft); font-size: 14.5px; margin-top: 6px; }
@@ -551,11 +552,11 @@
        DATA
     ========================================================= */
     const services = [
-      { title: 'Web Development', shape: 'browser', desc: 'Fast, accessible web apps and marketing sites built on modern frameworks.', tags: ['React', 'Next.js', 'TypeScript'] },
-      { title: 'Mobile Development', shape: 'device', desc: 'Native-feeling iOS & Android apps from a single, maintainable codebase.', tags: ['Flutter', 'React Native', 'Swift'] },
-      { title: 'Cloud & DevOps', shape: 'cloud', desc: 'Resilient infrastructure, CI/CD pipelines and observability that scale.', tags: ['AWS', 'Kubernetes', 'Terraform'] },
-      { title: 'AI Solutions', shape: 'ai', desc: 'Applied machine learning, LLM integrations and intelligent automation.', tags: ['PyTorch', 'LLMs', 'RAG'] },
-      { title: 'Backend Engineering', shape: 'nodes', desc: 'High-throughput APIs, event systems and data platforms you can trust.', tags: ['Go', 'Node.js', 'PostgreSQL'] },
+      { title: 'Web Development', desc: 'Fast, accessible web apps and marketing sites built on modern frameworks.', tags: ['React', 'Next.js', 'TypeScript'] },
+      { title: 'Mobile Development', desc: 'Native-feeling iOS & Android apps from a single, maintainable codebase.', tags: ['Flutter', 'React Native', 'Swift'] },
+      { title: 'Cloud & DevOps', desc: 'Resilient infrastructure, CI/CD pipelines and observability that scale.', tags: ['AWS', 'Kubernetes', 'Terraform'] },
+      { title: 'AI Solutions', desc: 'Applied machine learning, LLM integrations and intelligent automation.', tags: ['PyTorch', 'LLMs', 'RAG'] },
+      { title: 'Backend Engineering', desc: 'High-throughput APIs, event systems and data platforms you can trust.', tags: ['Go', 'Node.js', 'PostgreSQL'] },
     ];
 
     const projects = [
@@ -594,15 +595,17 @@
     ========================================================= */
     const cube = () => `<div class="obj3d"><span class="face f1"></span><span class="face f2"></span><span class="face f3"></span><span class="face f4"></span><span class="face f5"></span><span class="face f6"></span></div>`;
 
-    document.getElementById('services-grid').innerHTML = services.map(s => `
+    const render = (id, data, tpl) => { document.getElementById(id).innerHTML = data.map(tpl).join(''); };
+
+    render('services-grid', services, s => `
       <article class="glass svc reveal">
         <div class="obj">${cube()}</div>
         <h3>${s.title}</h3>
         <p>${s.desc}</p>
         <div class="tags">${s.tags.map(t => `<span class="chip">${t}</span>`).join('')}</div>
-      </article>`).join('');
+      </article>`);
 
-    document.getElementById('projects-grid').innerHTML = projects.map(p => `
+    render('projects-grid', projects, p => `
       <article class="glass proj reveal">
         <div class="top">
           <div class="industry">${p.industry}</div>
@@ -614,12 +617,12 @@
           <div class="row"><div class="label">Technology</div><div class="tech">${p.tech.map(t => `<span class="chip">${t}</span>`).join('')}</div></div>
           <div class="row"><div class="label">Result</div><span class="result">${p.result}</span></div>
         </div>
-      </article>`).join('');
+      </article>`);
 
-    document.getElementById('metrics').innerHTML = metrics.map(m => `
-      <div class="glass metric"><div class="num">${m.num}</div><div class="cap">${m.cap}</div></div>`).join('');
+    render('metrics', metrics, m => `
+      <div class="glass metric"><div class="num">${m.num}</div><div class="cap">${m.cap}</div></div>`);
 
-    document.getElementById('team-grid').innerHTML = team.map(t => {
+    render('team-grid', team, t => {
       const initials = t.name.split(' ').map(n => n[0]).join('');
       return `<article class="glass member reveal">
         <div class="avatar">${initials}</div>
@@ -627,14 +630,14 @@
         <div class="role">${t.role}</div>
         <p>${t.bio}</p>
       </article>`;
-    }).join('');
+    });
 
-    document.getElementById('process-grid').innerHTML = process.map(p => `
+    render('process-grid', process, p => `
       <div class="step">
         <div class="node">${p.k}</div>
         <h3>${p.title}</h3>
         <p>${p.desc}</p>
-      </div>`).join('');
+      </div>`);
 
     /* =========================================================
        NAV / SCROLL PROGRESS / REVEAL
@@ -722,17 +725,21 @@
       }
 
       // connecting lines between nearby nodes (data streams)
-      const linePos = [];
+      const linePairs = [];
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           if (nodes[i].position.distanceTo(nodes[j].position) < 3.4) {
-            linePos.push(nodes[i].position.x, nodes[i].position.y, nodes[i].position.z);
-            linePos.push(nodes[j].position.x, nodes[j].position.y, nodes[j].position.z);
+            linePairs.push(i, j);
           }
         }
       }
       const lineGeo = new THREE.BufferGeometry();
-      lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
+      const linePosAttr = new THREE.Float32BufferAttribute(new Float32Array(linePairs.length * 3), 3);
+      for (let k = 0; k < linePairs.length; k++) {
+        const n = nodes[linePairs[k]];
+        linePosAttr.setXYZ(k, n.position.x, n.position.y, n.position.z);
+      }
+      lineGeo.setAttribute('position', linePosAttr);
       const lines = new THREE.LineSegments(
         lineGeo,
         new THREE.LineBasicMaterial({ color: 0x6ea8ff, transparent: true, opacity: 0.18 })
@@ -782,6 +789,7 @@
       const resize = () => {
         const w = mount.clientWidth, h = mount.clientHeight;
         camera.aspect = w / h; camera.updateProjectionMatrix();
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(w, h);
       };
       window.addEventListener('resize', resize);
@@ -792,6 +800,22 @@
       window.addEventListener('scroll', () => {
         scrollFactor = Math.min(window.scrollY / window.innerHeight, 1);
       }, { passive: true });
+
+      function updateNode(n, t) {
+        const d = n.userData;
+        n.position.copy(d.base);
+        n.position.y += Math.sin(t * d.speed + d.phase) * d.amp;
+      }
+
+      function updateCube(c, t) {
+        const d = c.userData;
+        const a = t * d.speed + d.offset;
+        c.position.set(Math.cos(a) * d.radius, Math.sin(a) * d.radius * 0.4 + d.tilt, Math.sin(a) * d.radius);
+        c.rotation.x = a; c.rotation.y = a * 0.7;
+      }
+
+      let heroVisible = true;
+      let rafId = null;
 
       function animate() {
         const t = clock.getElapsedTime();
@@ -811,18 +835,14 @@
           ring1.rotation.z = t * 0.3;
           ring2.rotation.z = -t * 0.22;
 
-          nodes.forEach(n => {
-            const d = n.userData;
-            n.position.copy(d.base);
-            n.position.y += Math.sin(t * d.speed + d.phase) * d.amp;
-          });
+          nodes.forEach(n => updateNode(n, t));
+          for (let k = 0; k < linePairs.length; k++) {
+            const n = nodes[linePairs[k]];
+            linePosAttr.setXYZ(k, n.position.x, n.position.y, n.position.z);
+          }
+          linePosAttr.needsUpdate = true;
 
-          cubes.forEach(c => {
-            const d = c.userData;
-            const a = t * d.speed + d.offset;
-            c.position.set(Math.cos(a) * d.radius, Math.sin(a) * d.radius * 0.4 + d.tilt, Math.sin(a) * d.radius);
-            c.rotation.x = a; c.rotation.y = a * 0.7;
-          });
+          cubes.forEach(c => updateCube(c, t));
 
           particles.rotation.y = t * 0.015;
 
@@ -833,14 +853,22 @@
         }
 
         renderer.render(scene, camera);
-        requestAnimationFrame(animate);
+
+        if (heroVisible && !reduceMotion) {
+          rafId = requestAnimationFrame(animate);
+        } else {
+          rafId = null;
+        }
       }
       animate();
 
-      // pause rendering when hero off-screen (perf)
+      // pause rendering when hero off-screen or motion is reduced (perf)
       const heroEl = document.querySelector('.hero');
       const heroIO = new IntersectionObserver(([e]) => {
-        if (e.isIntersecting) { if (clock.running === false) clock.start(); }
+        heroVisible = e.isIntersecting;
+        if (heroVisible && !reduceMotion && rafId === null) {
+          animate();
+        }
       });
       heroIO.observe(heroEl);
     }).catch(err => {
